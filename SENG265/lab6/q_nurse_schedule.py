@@ -27,7 +27,10 @@ def main():
     alexander_schedule = patient_schedule("Alexander", 10)
 
     master_list = mark_schedule + susan_schedule + chloe_schedule + alexander_schedule
-    print(*mark_schedule, sep="\n")
+    master_list.sort()
+    for item in master_list:
+        formatted = item[0].strftime("%A, %d %m %Y, %X")
+        print(formatted, item[1])
     
     """
     STEP 2: Combine all the lists and then form a master list of
@@ -65,7 +68,7 @@ def patient_schedule(patient_name, interval_in_hours):
     num_times = int( datetime.timedelta(days=14).total_seconds() / (interval_in_hours*60*60) )
     print( datetime.timedelta(days=14).seconds / (interval_in_hours*60*60) )
 
-    for time in range(num_times):
+    for _ in range(num_times):
         med_time = med_time + datetime.timedelta(hours=interval_in_hours)
         list.append( (med_time,text) )
     return list
