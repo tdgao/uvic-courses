@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "*.jsx": "javascriptreact",
+    "*.astro": "astro",
+    "*.tsx": "typescriptreact",
+    "ctype.h": "c"
+  }
+}
