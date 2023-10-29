@@ -30,11 +30,12 @@ def get_terms_frequency(files, inputDir):
             contents = f.read()
             cur_items = contents.split("\n")
             for item in cur_items:
+                if not bool(item):
+                    break
                 # get the term and frequency number
                 term = item.split(" ")[0]
                 terms.add(term)
                 file_term_map[file + term] = item
-
     return [terms, file_term_map]
 
 
