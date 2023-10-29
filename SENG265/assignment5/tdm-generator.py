@@ -11,8 +11,9 @@ def output_sorted_files(inputDir, outputDir):
 
     # write sorted file names to file
     with open(outputDir + "/sorted_documents.txt", "w") as f:  # write mode
-        for file in files:
+        for file in files[:-1]:
             f.write(file + "\n")
+        f.write(files[-1])
 
     return files
 
@@ -41,8 +42,9 @@ def get_terms_frequency(files, inputDir):
 def output_sorted_terms(terms, outputDir):
     sorted_terms = sorted(terms)
     with open(outputDir + "/sorted_terms.txt", "w") as f:
-        for term in sorted_terms:
+        for term in sorted_terms[:-1]:
             f.write(term + "\n")
+        f.write(sorted_terms[-1])
     return sorted_terms
 
 
@@ -68,8 +70,11 @@ def output_matrix(outputDir, matrix, sorted_terms, files):
         for i in range(rows):
             for j in range(cols):
                 item = matrix.get((i, j))
-                f.write(str(item or 0) + " ")
-            f.write("\n")
+                f.write(str(item or 0))
+                if j != cols - 1:
+                    f.write(" ")
+            if i != rows - 1:
+                f.write("\n")
 
 
 def main():
