@@ -35,6 +35,7 @@ def get_terms_frequency(files, inputDir):
                 # get the term and frequency number
                 term = item.split(" ")[0]
                 terms.add(term)
+                # store item by file+term key in map
                 file_term_map[file + term] = item
     return [terms, file_term_map]
 
@@ -55,7 +56,9 @@ def get_matrix(file_term_map, sorted_terms, files):
     matrix = {}
     for i, term in enumerate(sorted_terms):
         for j, file in enumerate(files):
+            # get the item by file+term key in map
             if file_term_map.get(file + term):
+                # place frequency in matrix by file and term index
                 freq = file_term_map[file + term].split(" ")[1]
                 matrix[(i, j)] = freq
     return matrix
@@ -67,10 +70,13 @@ def output_matrix(outputDir, matrix, sorted_terms, files):
         rows = len(sorted_terms)
         cols = len(files)
 
+        # access the frequency by files and terms index
         f.write(str(rows) + " " + str(cols) + "\n")
         for i in range(rows):
             for j in range(cols):
                 item = matrix.get((i, j))
+
+                # write to file
                 f.write(str(item or 0))
                 if j != cols - 1:
                     f.write(" ")
