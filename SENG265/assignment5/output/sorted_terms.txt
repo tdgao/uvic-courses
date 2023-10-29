@@ -1,6 +1,6 @@
-truck
+bike
 boat
-scooter
 car
 hous
-bike
+scooter
+truck
