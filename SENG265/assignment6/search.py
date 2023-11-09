@@ -2,7 +2,7 @@
 import sys
 
 
-# returns a list of the relavant words to query
+# returns a list of 1 and 0 based on existance of term in query words
 def get_query_vector(terms):
     query_words = []
     for line in sys.stdin:
@@ -20,9 +20,9 @@ def get_query_vector(terms):
     return query_vector
 
 
+# returns the list of sorted terms
 def get_sorted_terms(indexDir):
     terms = []
-    # todo - replace with param
     with open(indexDir + "/sorted_terms.txt", "r") as f:
         contents = f.read()
         for term in contents.split("\n"):
@@ -36,7 +36,6 @@ def get_sorted_terms(indexDir):
 # returns a list of lists, with each list being the column in the matrix
 def get_matrix_vectors(indexDir):
     vectors = []
-    # todo - replace with param
     with open(indexDir + "/td_matrix.txt", "r") as f:
         contents = f.read()
         lines = contents.split("\n")
@@ -54,6 +53,19 @@ def get_matrix_vectors(indexDir):
                 value = int(values[i])
                 vectors[i].append(value)
     return vectors
+
+
+# returns the list of relavent sorted file names
+def get_file_names(indexDir):
+    names = []
+    with open(indexDir + "/sorted_documents.txt", "r") as f:
+        contents = f.read()
+        for name in contents.split("\n"):
+            name = name.strip()
+            if name:
+                names.append(name)
+
+    return names
 
 
 # Does the dot products of vectors A and B
@@ -91,10 +103,18 @@ def main():
     query_vector = get_query_vector(terms)
     matrix_vectors = get_matrix_vectors(indexDir)
 
-    for m_vector in matrix_vectors:
-        result = cosine_similarity(query_vector, m_vector)
+    file_names = get_file_names(indexDir)
 
-        print(f"{result:.2f}")
+    rankings = []
+    for i, m_vector in enumerate(matrix_vectors):
+        result = cosine_similarity(query_vector, m_vector)
+        rank = "{:.4f}".format(round(result, 4))
+        rankings.append((rank, file_names[i]))
+
+    rankings.sort(reverse=True)
+
+    for rank in rankings:
+        print(rank[0] + " " + rank[1])
 
 
 if __name__ == "__main__":
